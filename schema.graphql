@@ -1,0 +1,28 @@
+type Card @entity {
+	id: ID!
+	owner: Bytes! # address
+	data: Bytes!
+	cellar: Cellar!
+	level: Level!
+}
+
+type Perk @entity {
+	id: ID!
+	name: String!
+	price: BigInt!
+}
+
+type Level @entity {
+	id: ID!
+	name: String!
+	price: BigInt!
+	capacity: BigInt!
+	defaultPerks: [Perk!]!
+}
+
+type Cellar @entity {
+	id: ID! # cellar address
+	capacity: BigInt!
+	aum: BigInt!
+	# owned; [Bottles!]!
+}

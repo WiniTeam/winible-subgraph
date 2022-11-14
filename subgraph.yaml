@@ -1,0 +1,33 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Winible
+    network: goerli
+    source:
+      address: "0xD407c1FA267529E60f52b4CA4Bd73a90a932a7A3"
+      abi: Winible
+      startBlock: 7935536
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - ApprovalForAll
+        - OwnershipTransferred
+        - Transfer
+      abis:
+        - name: Winible
+          file: ./abis/Winible.json
+      eventHandlers:
+        - event: LevelAdded(indexed uint256,string,uint256,uint256)
+          handler: handleLevelAdded
+        - event: PerkAdded(indexed uint256,string,uint256)
+          handler: handlePerkAdded
+        - event: DefaultPerkAdded(indexed uint256,indexed uint256)
+          handler: handleDefaultPerkAdded
+        - event: CellarBuilt(indexed uint256,indexed address,uint256,uint256,uint256,bool)
+          handler: handleCellarBuilt
+      file: ./src/mapping.ts
