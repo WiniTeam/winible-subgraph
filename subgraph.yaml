@@ -14,13 +14,17 @@ dataSources:
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
-        - Approval
-        - ApprovalForAll
-        - OwnershipTransferred
-        - Transfer
+        - Card
+        - Perk
+        - Level
+        - Cellar
+        - Collection
+        - Bottle
       abis:
         - name: Winible
           file: ./abis/Winible.json
+        - name: Bottle
+          file: ./abis/Bottle.json
       eventHandlers:
         - event: LevelAdded(indexed uint256,string,uint256,uint256)
           handler: handleLevelAdded
@@ -30,4 +34,60 @@ dataSources:
           handler: handleDefaultPerkAdded
         - event: CellarBuilt(indexed uint256,indexed address,uint256,uint256,uint256,bool)
           handler: handleCellarBuilt
-      file: ./src/mapping.ts
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+      callHandlers:
+        - function: setWhitelist(address,bool)
+          handler: handleWhitelistBottle
+      file: ./src/winible.ts
+##################################################################################
+  - kind: ethereum
+    name: Collection_Lorem
+    network: goerli
+    source:
+      address: "0xb706d65c89d4767cc88af764057aa1f80d50386f"
+      abi: Bottle
+      startBlock: 7935536
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Collection
+        - Bottle
+        - Cellar
+      abis:
+        - name: Bottle
+          file: ./abis/Bottle.json
+      eventHandlers:
+        - event: BuyBottle(indexed uint256,address)
+          handler: handleBuy
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+      # callHandlers:
+      file: ./src/collection.ts
+  - kind: ethereum
+    name: Collection_Lorem2
+    network: goerli
+    source:
+      address: "0x03f7edf66c61966392c29fffc52dbed387764163"
+      abi: Bottle
+      startBlock: 7935536
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Collection
+        - Bottle
+        - Cellar
+      abis:
+        - name: Bottle
+          file: ./abis/Bottle.json
+      eventHandlers:
+        - event: BuyBottle(indexed uint256,address)
+          handler: handleBuy
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+      # callHandlers:
+      file: ./src/collection.ts

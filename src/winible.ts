@@ -1,7 +1,7 @@
 import { BigInt, Bytes } from "@graphprotocol/graph-ts"
-import { CellarBuilt, DefaultPerkAdded, LevelAdded, PerkAdded, Winible } from "../generated/Winible/Winible"
-import { Card, Cellar, Level, Perk } from "../generated/schema"
-
+import { CellarBuilt, DefaultPerkAdded, LevelAdded, PerkAdded, SetWhitelistCall, Transfer, Winible } from "../generated/Winible/Winible"
+import { Bottle as BottleContract } from "../generated/Winible/Bottle"
+import { Card, Cellar, Collection, Level, Perk } from "../generated/schema"
 
 export function handleLevelAdded (event: LevelAdded): void {
 	let level = new Level(event.params._level.toString());
@@ -35,6 +35,7 @@ export function handleCellarBuilt (event: CellarBuilt): void {
 	let cellar = new Cellar(event.params._address.toHexString());
 	cellar.capacity = event.params._capacity;
 	cellar.aum = BigInt.fromI64(0);
+	cellar.owned = [];
 	cellar.save();
 	
 	let card = new Card(event.params._id.toString());
@@ -45,6 +46,29 @@ export function handleCellarBuilt (event: CellarBuilt): void {
 	card.save();
 }
 
+export function handleTransfer (event: Transfer): void {
+	let card = Card.load(event.params.tokenId.toString());
+	if (card) {
+		card.owner = event.params.to;
+		card.save();
+	}
+}
+
+export function handleWhitelistBottle (call: SetWhitelistCall): void {
+	if (call.inputs._isWhitelisted) {
+		const collectionAddress = call.inputs._bottle;
+	
+		let collection = new Collection(collectionAddress.toHexString());
+		
+		const collectionContract = BottleContract.bind(collectionAddress);
+		collection.name = collectionContract.name();
+		collection.symbol = collectionContract.symbol();
+		collection.maxSupply = collectionContract.maxSupply();
+		collection.currentSupply = collectionContract.circulatingSupply();
+
+		collection.save();
+	}
+}
 
 // It is also possible to access smart contracts from mappings. For
 // example, the contract that has emitted the event can be connected to
