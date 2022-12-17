@@ -1,7 +1,7 @@
 import { BigInt, Bytes } from "@graphprotocol/graph-ts"
-import { CellarBuilt, DefaultPerkAdded, LevelAdded, PerkAdded, SetWhitelistCall, Transfer, Winible } from "../generated/Winible/Winible"
+import { CellarBuilt, DefaultPerkAdded, ExpiryIncreased, LevelAdded, PerkAdded, SetWhitelistCall, Transfer, Winible } from "../generated/Winible/Winible"
 import { Bottle as BottleContract } from "../generated/Winible/Bottle"
-import { Card, Cellar, Collection, Level, Perk } from "../generated/schema"
+import { Bottle, Card, Cellar, Collection, Level, Perk } from "../generated/schema"
 
 export function handleLevelAdded (event: LevelAdded): void {
 	let level = new Level(event.params._level.toString());
@@ -55,7 +55,7 @@ export function handleTransfer (event: Transfer): void {
 }
 
 export function handleWhitelistBottle (call: SetWhitelistCall): void {
-	if (call.inputs._isWhitelisted) {
+	if (call.inputs._isWhitelisted && '0x93F964b3C24C0B108479326699494De69fCaf931'.toLowerCase() != call.inputs._bottle.toHexString().toLowerCase()) {
 		const collectionAddress = call.inputs._bottle;
 	
 		let collection = new Collection(collectionAddress.toHexString());
@@ -65,8 +65,18 @@ export function handleWhitelistBottle (call: SetWhitelistCall): void {
 		collection.symbol = collectionContract.symbol();
 		collection.maxSupply = collectionContract.maxSupply();
 		collection.currentSupply = collectionContract.circulatingSupply();
+		collection.minPrice = collectionContract.minPrice();
 
 		collection.save();
+	}
+}
+
+export function handlerExpiryIncreased(event: ExpiryIncreased): void {
+	let bottle = Bottle.load(`${event.params._colllection.toHexString()}-${event.params._bottleId}`);
+
+	if (bottle) {
+		bottle.expiry = bottle.expiry.plus(event.params._duration);
+		bottle.save();
 	}
 }
 

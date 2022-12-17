@@ -26,6 +26,7 @@ type Collection @entity {
 	symbol: String!
 	maxSupply: BigInt!
 	currentSupply: BigInt!
+	minPrice: BigInt!
 }
 
 type Bottle @entity {

@@ -80,6 +80,25 @@
     "inputs": [
       {
         "indexed": true,
+        "internalType": "address",
+        "name": "_cellar",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_newCapacity",
+        "type": "uint256"
+      }
+    ],
+    "name": "CapacityIncreased",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
         "internalType": "uint256",
         "name": "_id",
         "type": "uint256"
@@ -135,6 +154,31 @@
       }
     ],
     "name": "DefaultPerkAdded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_colllection",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_bottleId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_duration",
+        "type": "uint256"
+      }
+    ],
+    "name": "ExpiryIncreased",
     "type": "event"
   },
   {
@@ -568,6 +612,11 @@
         "internalType": "uint256",
         "name": "_cap",
         "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "_inETH",
+        "type": "bool"
       }
     ],
     "name": "increase",

@@ -6,9 +6,9 @@ dataSources:
     name: Winible
     network: goerli
     source:
-      address: "0xD407c1FA267529E60f52b4CA4Bd73a90a932a7A3"
+      address: "0x9A80A0dA84dbA4e40c746AFAa6B512D277E8A60a"
       abi: Winible
-      startBlock: 7935536
+      startBlock: 8091064
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -36,6 +36,8 @@ dataSources:
           handler: handleCellarBuilt
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
+        - event: ExpiryIncreased(indexed address,indexed uint256,uint256)
+          handler: handlerExpiryIncreased
       callHandlers:
         - function: setWhitelist(address,bool)
           handler: handleWhitelistBottle
@@ -45,34 +47,9 @@ dataSources:
     name: Collection_Lorem
     network: goerli
     source:
-      address: "0xb706d65c89d4767cc88af764057aa1f80d50386f"
+      address: "0x1F004E11E10C25f1A6c0BF1068004A18A7b5cF9d"
       abi: Bottle
-      startBlock: 7935536
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      entities:
-        - Collection
-        - Bottle
-        - Cellar
-      abis:
-        - name: Bottle
-          file: ./abis/Bottle.json
-      eventHandlers:
-        - event: BuyBottle(indexed uint256,address)
-          handler: handleBuy
-        - event: Transfer(indexed address,indexed address,indexed uint256)
-          handler: handleTransfer
-      # callHandlers:
-      file: ./src/collection.ts
-  - kind: ethereum
-    name: Collection_Lorem2
-    network: goerli
-    source:
-      address: "0x03f7edf66c61966392c29fffc52dbed387764163"
-      abi: Bottle
-      startBlock: 7935536
+      startBlock: 8091122
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
