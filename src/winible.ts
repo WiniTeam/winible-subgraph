@@ -2,6 +2,7 @@ import { BigInt, Bytes } from "@graphprotocol/graph-ts"
 import { CellarBuilt, DefaultPerkAdded, ExpiryIncreased, LevelAdded, PerkAdded, SetWhitelistCall, Transfer, Winible } from "../generated/Winible/Winible"
 import { Bottle as BottleContract } from "../generated/Winible/Bottle"
 import { Bottle, Card, Cellar, Collection, Level, Perk } from "../generated/schema"
+import { CollectionTemplate } from "../generated/templates";
 
 export function handleLevelAdded (event: LevelAdded): void {
 	let level = new Level(event.params._level.toString());
@@ -58,6 +59,7 @@ export function handleWhitelistBottle (call: SetWhitelistCall): void {
 	if (call.inputs._isWhitelisted && '0x93F964b3C24C0B108479326699494De69fCaf931'.toLowerCase() != call.inputs._bottle.toHexString().toLowerCase()) {
 		const collectionAddress = call.inputs._bottle;
 	
+		CollectionTemplate.create(collectionAddress);
 		let collection = new Collection(collectionAddress.toHexString());
 		
 		const collectionContract = BottleContract.bind(collectionAddress);

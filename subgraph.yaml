@@ -1,4 +1,4 @@
-specVersion: 0.0.2
+specVersion: 0.0.4
 schema:
   file: ./schema.graphql
 dataSources:
@@ -6,12 +6,12 @@ dataSources:
     name: Winible
     network: goerli
     source:
-      address: "0x9A80A0dA84dbA4e40c746AFAa6B512D277E8A60a"
+      address: "0x385D04F8FD6ceF188ab851B097A956b9520dfC15"
       abi: Winible
-      startBlock: 8091064
+      startBlock: 8479858
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.5
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
         - Card
@@ -43,16 +43,15 @@ dataSources:
           handler: handleWhitelistBottle
       file: ./src/winible.ts
 ##################################################################################
-  - kind: ethereum
-    name: Collection_Lorem
+templates:
+  - name: CollectionTemplate
+    kind: ethereum/contract
     network: goerli
     source:
-      address: "0x1F004E11E10C25f1A6c0BF1068004A18A7b5cF9d"
       abi: Bottle
-      startBlock: 8091122
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.5
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
         - Collection
